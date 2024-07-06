@@ -1,10 +1,29 @@
-var http = require('http')
+const http = require('http');
+const express = require('express');
+const QRCode = require('qrcode');
 
-var server = http.createServer(function (request, response) {
-    response.writeHead(200, { 'Content-Type': 'text/html' });
-    response.end('Hello node.js!!')
-})
+const PORT = 8080;
 
-server.listen(8080, function () {
-    console.log('Server is running...')
-})
+const app = express();
+
+app.use(express.json({ extended: true }));
+
+app.get('/', (_, res) => {
+  res.send('Server Test !!!');
+});
+
+app.post('/make', (req, res) => {
+  const { url } = req.body;
+
+  QRCode.toDataURL(url, (err, qrcode) => {
+    if (err) {
+      console.err(err);
+    }
+
+    res.send(qrcode);
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}...`);
+});
