@@ -1,1 +1,3 @@
-# QR code generator 만들기
+# README
+
+### QR code generator
